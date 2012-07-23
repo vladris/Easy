@@ -60,9 +60,12 @@ namespace Easy.IO
         /// </summary>
         public void Stop()
         {
-            _timer.Cancel();
-            _timer = null;
-            _sem.WaitOne();
+            if (_timer != null)
+            {
+                _timer.Cancel();
+                _sem.WaitOne();
+                _timer = null;
+            }
         }
 
         // Perform save using the semaphore
@@ -96,7 +99,7 @@ namespace Easy.IO
 
             protected override void DoSave(ThreadPoolTimer timer)
             {
-                throw new NotImplementedException();
+                // Do nothing
             }
         }
 

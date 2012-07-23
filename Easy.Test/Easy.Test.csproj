@@ -121,6 +121,7 @@
     <Compile Include="Text\Mocks\TextSelectionMock.cs" />
     <Compile Include="Text\SearchTest.cs" />
     <Compile Include="Text\WordCountTest.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

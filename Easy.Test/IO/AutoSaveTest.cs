@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
@@ -46,7 +47,7 @@ namespace Easy.Test.IO
             }
 
             // Make sure auto-save has time to trigger and finish
-            Sleep(1000);
+            Utils.Sleep(1000);
 
             // Stop auto-save
             autoSave.Stop();
@@ -91,7 +92,7 @@ namespace Easy.Test.IO
             }
 
             // Make sure auto-save has time to trigger and finish
-            Sleep(1000);
+            Utils.Sleep(1000);
 
             // Stop auto-save
             autoSave.Stop();
@@ -103,11 +104,51 @@ namespace Easy.Test.IO
             Assert.AreEqual("49", text);
         }
 
-        // Simple sleep implementation
-        private void Sleep(int milliseconds)
+        /// <summary>
+        /// Enure that Stop() doesn't return while save is ongoing
+        /// </summary>
+        [TestMethod]
+        public void TestAutoSaveStop()
         {
-            DateTime start = DateTime.Now;
-            while ((DateTime.Now - start).TotalMilliseconds < milliseconds) ;
+            var autoSave = new AutoSaveStop();
+
+            autoSave.Start();
+
+            // Wait for auto-save to trigger
+            autoSave.Semaphore1.WaitOne();
+
+            // Auto-saving...
+            autoSave.Semaphore2.Release();
+
+            var before = DateTime.Now;
+
+            // DoSave is sleeping 500 ms now, Stop should return only after DoSave completes
+            autoSave.Stop();
+
+            // Should've taken at least 300 ms for DoSave to finish (actually 500 but give some room)
+            Assert.IsTrue((DateTime.Now - before).TotalMilliseconds > 300);
+        }
+
+        // Used by TestAutoSaveStop
+        class AutoSaveStop : AutoSave<string>
+        {
+            public Semaphore Semaphore1 { get; set; }
+            public Semaphore Semaphore2 { get; set; }
+
+            public AutoSaveStop()
+                : base(new SaveProviderMock<string>(null, String.Empty), TimeSpan.FromMilliseconds(500))
+            {
+                Semaphore1 = new Semaphore(0, 1);
+                Semaphore2 = new Semaphore(0, 1);
+            }
+
+            protected override void DoSave(Windows.System.Threading.ThreadPoolTimer timer)
+            {
+                Semaphore1.Release();
+                Semaphore2.WaitOne();
+
+                Utils.Sleep(500);
+            }
         }
     }
 }

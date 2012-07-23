@@ -119,5 +119,15 @@ namespace Easy.Text.Highlight
             workerRange.SetRange(document.Selection.EndPosition, document.Selection.EndPosition);
             DefaultFormatting(workerRange.CharacterFormat);
         }
+
+        /// <summary>
+        /// Performs the highlighting in a batch update
+        /// </summary>
+        public void BatchHighlight()
+        {
+            document.BatchDisplayUpdates();
+            Highlight();
+            document.ApplyDisplayUpdates();
+        }
     }
 }
