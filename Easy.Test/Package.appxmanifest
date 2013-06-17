@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
+  <Identity Name="27e4fc09-19b5-4a2e-bd4a-e40c6b53f5ad" Publisher="CN=vladris" Version="1.0.0.0" />
+  <Properties>
+    <DisplayName>Easy.Test</DisplayName>
+    <PublisherDisplayName>vladris</PublisherDisplayName>
+    <Logo>Images\UnitTestStoreLogo.png</Logo>
+    <Description>Easy.Tests</Description>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.2.1</OSMinVersion>
+    <OSMaxVersionTested>6.2.1</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="vstest.executionengine.App" Executable="vstest.executionengine.appcontainer.exe" EntryPoint="vstest.executionengine.App">
+      <VisualElements DisplayName="NoUIEntryPoints" Logo="Images\UnitTestLogo.png" SmallLogo="Images\UnitTestSmallLogo.png" Description="vstest.executionengine.App" ForegroundText="light" BackgroundColor="#0084FF">
+        <SplashScreen Image="Images\UnitTestSplashScreen.png" />
+      </VisualElements>
+    </Application>
+    <Application Id="vstest.executionengine.x86.App" Executable="vstest.executionengine.appcontainer.x86.exe" EntryPoint="vstest.executionengine.x86.App">
+      <VisualElements DisplayName="NoUIEntryPoints" Logo="Images\UnitTestLogo.png" SmallLogo="Images\UnitTestSmallLogo.png" Description="vstest.executionengine.x86.App" ForegroundText="light" BackgroundColor="#0084FF">
+        <SplashScreen Image="Images\UnitTestSplashScreen.png" />
+      </VisualElements>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>
