@@ -65,8 +65,8 @@ namespace Easy.Test.Platform
             Assert.IsNull(_container.Values[TestSettings.Keys.IntPropertyDefault]);
             Assert.IsNull(_container.Values[TestSettings.Keys.IntPropertyNoDefault]);
 
-            Assert.AreEqual(0, _settings.IntPropertyNoDefault);
-            Assert.AreEqual(TestSettings.Defaults.DefaultIntValue, _settings.IntPropertyDefault);
+            Assert.AreEqual(0, _settings.IntPropertyNoDefault.Value);
+            Assert.AreEqual(TestSettings.Defaults.DefaultIntValue, _settings.IntPropertyDefault.Value);
         }
 
         // Test defaults for a string setting
@@ -76,8 +76,8 @@ namespace Easy.Test.Platform
             Assert.IsNull(_container.Values[TestSettings.Keys.StringPropertyDefault]);
             Assert.IsNull(_container.Values[TestSettings.Keys.StringPropertyNoDefault]);
 
-            Assert.AreEqual(String.Empty, _settings.StringPropertyNoDefault);
-            Assert.AreEqual(TestSettings.Defaults.DefaultStringValue, _settings.StringPropertyDefault);
+            Assert.AreEqual(String.Empty, _settings.StringPropertyNoDefault.Value);
+            Assert.AreEqual(TestSettings.Defaults.DefaultStringValue, _settings.StringPropertyDefault.Value);
         }
 
         // Test setting a value and reading it directly from the data container
