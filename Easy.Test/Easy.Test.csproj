@@ -112,6 +112,8 @@
     <Compile Include="IO\FileTest.cs" />
     <Compile Include="Platform\SettingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Text\Mocks\ITextDocumentMock.cs" />
+    <Compile Include="Text\WordCountTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
