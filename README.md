@@ -1,4 +1,4 @@
-Easy <sup>α</sup> 
+Easy<sup>α</sup> 
 ====
 
 A library that makes developing for WinRT easy (well, easier).
@@ -10,6 +10,18 @@ Currently in early alpha, use at your own risk.
 
 Classes
 -------
+
+### Easy.IO.File
+
+Can create unique temporary files and perform transactional file saves.
+
+```charp
+// Temporary file with guaranteed unique name
+IStorageFile temp = await File.CreateTemporaryFileAsync();
+
+// Transactional file save
+await File.SaveAsync(temp, "some content");
+```
 
 ### Easy.Platform.Setting
 
