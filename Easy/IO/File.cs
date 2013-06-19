@@ -32,7 +32,7 @@ namespace Easy.IO
         /// </summary>
         /// <param name="file">File</param>
         /// <param name="content">Content</param>
-        public static async void SaveAsync(IStorageFile file, string content)
+        public static async Task SaveAsync(IStorageFile file, string content)
         {
             var temp = await CreateTemporaryFileAsync();
             await FileIO.WriteTextAsync(temp, content);
@@ -44,7 +44,7 @@ namespace Easy.IO
         /// </summary>
         /// <param name="file">File</param>
         /// <param name="buffer">Buffer</param>
-        public static async void SaveAsync(IStorageFile file, byte[] buffer)
+        public static async Task SaveAsync(IStorageFile file, byte[] buffer)
         {
             var temp = await CreateTemporaryFileAsync();
             await FileIO.WriteBytesAsync(temp, buffer);
