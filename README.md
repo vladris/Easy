@@ -48,13 +48,13 @@ var search = new Search(SomeTextDocument);
 // Highlights the first instance of 'foo' in the text
 search.FindFirst("foo"); 
 
-// Highlights the next instance
-search.FindNext(); 
+// Highlights the next instance of 'bar' after the previously found 'foo'
+search.FindNext("bar"); 
 
 ...
 
 // Search wraps around to the beginning of the text
-search.FindNext(); 
+search.FindNext("bar"); 
 ```
 
 ### Easy.Text.WordCount

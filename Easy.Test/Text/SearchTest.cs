@@ -57,7 +57,7 @@ namespace Easy.Test.Text
             _document.Text = "some string string to find";
 
             _search.FindFirst("string");
-            _search.FindNext();
+            _search.FindNext("string");
 
             Assert.AreEqual(12, _document.Selection.StartPosition);
             Assert.AreEqual(18, _document.Selection.EndPosition);
@@ -67,7 +67,7 @@ namespace Easy.Test.Text
         /// Tests FindFirst for a non-existent string
         /// </summary>
         [TestMethod]
-        public void NotFound()
+        public void TestNotFoundFirst()
         {
             _document.Text = "some string";
 
@@ -80,19 +80,54 @@ namespace Easy.Test.Text
         }
 
         /// <summary>
+        /// Tests FindNext for a non-existent string
+        /// </summary>
+        [TestMethod]
+        public void TestNotFoundNext()
+        {
+            _document.Text = "some string";
+
+            _search.FindFirst("some");
+
+            Assert.AreEqual(0, _document.Selection.StartPosition);
+            Assert.AreEqual(4, _document.Selection.EndPosition);
+
+            _search.FindNext("foo");
+
+            Assert.AreEqual(0, _document.Selection.StartPosition);
+            Assert.AreEqual(4, _document.Selection.EndPosition);
+        }
+
+        /// <summary>
         /// Tests FindNext wrap around
         /// </summary>
         [TestMethod]
-        public void WrapAround()
+        public void TestWrapAround()
         {
             _document.Text = "some foo string to find foo";
 
             _search.FindFirst("foo");
-            _search.FindNext();
-            _search.FindNext();
+            _search.FindNext("foo");
+            _search.FindNext("foo");
 
             Assert.AreEqual(5, _document.Selection.StartPosition);
             Assert.AreEqual(8, _document.Selection.EndPosition);
+        }
+
+        /// <summary>
+        /// Tests FindNext of different string after FindFirst
+        /// </summary>
+        [TestMethod]
+        public void TestFindFirstFindOtherNext()
+        {
+            _document.Text = "some foo string to find foo";
+
+            _search.FindFirst("string");
+            _search.FindNext("foo");
+
+            // Should find second "foo" (the one after "string")
+            Assert.AreEqual(24, _document.Selection.StartPosition);
+            Assert.AreEqual(27, _document.Selection.EndPosition);
         }
     }
 }
