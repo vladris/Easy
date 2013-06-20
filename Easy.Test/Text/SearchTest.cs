@@ -64,6 +64,22 @@ namespace Easy.Test.Text
         }
 
         /// <summary>
+        /// Tests FindFirst for a non-existent string
+        /// </summary>
+        [TestMethod]
+        public void NotFound()
+        {
+            _document.Text = "some string";
+
+            _document.Selection.SetRange(1, 2);
+
+            _search.FindFirst("foo");
+
+            Assert.AreEqual(1, _document.Selection.StartPosition);
+            Assert.AreEqual(2, _document.Selection.EndPosition);
+        }
+
+        /// <summary>
         /// Tests FindNext wrap around
         /// </summary>
         [TestMethod]

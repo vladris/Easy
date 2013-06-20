@@ -38,6 +38,35 @@ foo.Value = 42;  // setting associated with foo is now 42
 string x = bar.Value; // x is now "baz"
 ```
 
+### Easy.Text.Search
+
+Enables string search on an ITextDocument, selecting the found string.
+
+```charp
+var search = new Search(SomeTextDocument);
+
+// Highlights the first instance of 'foo' in the text
+search.FindFirst("foo"); 
+
+// Highlights the next instance
+search.FindNext(); 
+
+...
+
+// Search wraps around to the beginning of the text
+search.FindNext(); 
+```
+
+### Easy.Text.WordCount
+
+Provides asynchronous word count on an ITextDocument.
+
+```charp
+var wordCount = new WordCount(SomeTextDocument);
+
+int words = await wordCount.Count(); 
+```
+
 ### Easy.UI.Toast
 
 Easily display toast messages. Currently supports text or title + text.
