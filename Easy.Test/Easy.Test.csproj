@@ -9,8 +9,8 @@
     <ProjectGuid>{988266D0-F1D4-4057-8299-FED64C36FB77}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Easy.Tests</RootNamespace>
-    <AssemblyName>Easy.Tests</AssemblyName>
+    <RootNamespace>Easy.Test</RootNamespace>
+    <AssemblyName>Easy.Test</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -112,7 +112,9 @@
     <Compile Include="IO\FileTest.cs" />
     <Compile Include="Platform\SettingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Text\Mocks\ITextDocumentMock.cs" />
+    <Compile Include="Text\Mocks\TextDocumentMock.cs" />
+    <Compile Include="Text\Mocks\TextSelectionMock.cs" />
+    <Compile Include="Text\SearchTest.cs" />
     <Compile Include="Text\WordCountTest.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -123,10 +123,7 @@ namespace Easy.Test.Text.Mocks
             throw new NotImplementedException();
         }
 
-        public ITextSelection Selection
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public ITextSelection Selection { get; set; }
 
         public void SetDefaultCharacterFormat(ITextCharacterFormat value)
         {
