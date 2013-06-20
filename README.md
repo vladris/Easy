@@ -42,7 +42,7 @@ string x = bar.Value; // x is now "baz"
 
 Enables string search on an ITextDocument, selecting the found string.
 
-```charp
+```csharp
 var search = new Search(SomeTextDocument);
 
 // Highlights the first instance of 'foo' in the text
@@ -61,7 +61,7 @@ search.FindNext();
 
 Provides asynchronous word count on an ITextDocument.
 
-```charp
+```csharp
 var wordCount = new WordCount(SomeTextDocument);
 
 int words = await wordCount.Count(); 
