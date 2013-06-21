@@ -105,6 +105,8 @@
     <Compile Include="IO\File.cs" />
     <Compile Include="Platform\Setting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Text\Highlight\BaseHighlighter.cs" />
+    <Compile Include="Text\Highlight\Markdown.cs" />
     <Compile Include="Text\Search.cs" />
     <Compile Include="Text\WordCount.cs" />
     <Compile Include="UI\Toast.cs" />
