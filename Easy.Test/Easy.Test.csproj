@@ -112,7 +112,10 @@
     <Compile Include="IO\FileTest.cs" />
     <Compile Include="Platform\SettingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Text\Highlight\MarkdownTest.cs" />
+    <Compile Include="Text\Mocks\TextCharacterFormatMock.cs" />
     <Compile Include="Text\Mocks\TextDocumentMock.cs" />
+    <Compile Include="Text\Mocks\TextRangeMock.cs" />
     <Compile Include="Text\Mocks\TextSelectionMock.cs" />
     <Compile Include="Text\SearchTest.cs" />
     <Compile Include="Text\WordCountTest.cs" />

@@ -18,6 +18,11 @@ namespace Easy.Test.Text.Mocks
         /// </summary>
         public string Text { get; set; }
 
+        /// <summary>
+        /// ITextRange returned by GetRange
+        /// </summary>
+        public ITextRange TextRange { get; set; }
+
         #region ITextDocument
         public int ApplyDisplayUpdates()
         {
@@ -95,7 +100,7 @@ namespace Easy.Test.Text.Mocks
 
         public ITextRange GetRange(int startPosition, int endPosition)
         {
-            throw new NotImplementedException();
+            return TextRange;
         }
 
         public ITextRange GetRangeFromPoint(Windows.Foundation.Point point, PointOptions options)
