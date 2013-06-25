@@ -73,12 +73,33 @@ namespace Easy.Test.Text.Highlight
         }
 
         /// <summary>
+        /// Test the DefaultFormatting method
+        /// </summary>
+        [TestMethod]
+        public void TestDefaultFormatting()
+        {
+            // Test this method on markdown itself, as it is stubbed in MarkdownTestHighlighter
+            _highlighter = new Markdown(_document);
+
+            // Make some text that doesn't require formatting bold/italic
+            _range.Text = "This is some text that should not get highlighted.";
+            _range.CharacterFormat.Bold = FormatEffect.On;
+            _range.CharacterFormat.Italic = FormatEffect.On;
+
+            _highlighter.Highlight();
+
+            // Highlighting should've been removed
+            Assert.AreEqual(FormatEffect.Off, _range.CharacterFormat.Italic);
+            Assert.AreEqual(FormatEffect.Off, _range.CharacterFormat.Bold);
+        }
+
+        /// <summary>
         /// Tests text with nothig to highlight
         /// </summary>
         [TestMethod]
         public void TestNothingToHighlight()
         {
-            _range.Text = "This is some text\nthat should not get highlighted.";
+            _range.Text = "This is some text that should not get highlighted.";
 
             Assert.AreEqual(FormatEffect.Off, _range.CharacterFormat.Italic);
             Assert.AreEqual(FormatEffect.Off, _range.CharacterFormat.Bold);
