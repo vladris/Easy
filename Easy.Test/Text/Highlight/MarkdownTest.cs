@@ -47,6 +47,8 @@ namespace Easy.Test.Text.Highlight
         private TextDocumentMock _document;
 
         // Mock text range
+        // Note: we actually use the _range.Text to set the text as the highlighter
+        // retrieves its text from the range, not from the document
         private TextRangeMock _range;
 
         // Markdown highlighter
@@ -186,6 +188,84 @@ namespace Easy.Test.Text.Highlight
             _highlighter.Highlight();
 
             Assert.AreEqual(FormatEffect.On, _range.CharacterFormat.Italic);
+            Assert.AreEqual(FormatEffect.On, _range.CharacterFormat.Bold);
+        }
+
+        /// <summary>
+        /// Tests 
+        /// 
+        /// title
+        /// =====
+        /// </summary>
+        [TestMethod]
+        public void TestTitleEquals()
+        {
+            _range.Text = "Title text\r=======\r";
+
+            Assert.AreEqual(FormatEffect.Off, _range.CharacterFormat.Italic);
+            Assert.AreEqual(FormatEffect.Off, _range.CharacterFormat.Bold);
+
+            _highlighter.Highlight();
+
+            Assert.AreEqual(FormatEffect.Off, _range.CharacterFormat.Italic);
+            Assert.AreEqual(FormatEffect.On, _range.CharacterFormat.Bold);
+        }
+
+        /// <summary>
+        /// Tests 
+        /// 
+        /// title
+        /// -----
+        /// </summary>
+        [TestMethod]
+        public void TestTitleDashes()
+        {
+            _range.Text = "Title text\r-------\r";
+
+            Assert.AreEqual(FormatEffect.Off, _range.CharacterFormat.Italic);
+            Assert.AreEqual(FormatEffect.Off, _range.CharacterFormat.Bold);
+
+            _highlighter.Highlight();
+
+            Assert.AreEqual(FormatEffect.Off, _range.CharacterFormat.Italic);
+            Assert.AreEqual(FormatEffect.On, _range.CharacterFormat.Bold);
+        }
+
+        /// <summary>
+        /// Tests 
+        /// 
+        /// # title
+        /// </summary>
+        [TestMethod]
+        public void TestTitlePound()
+        {
+            _range.Text = "# Title text\r";
+
+            Assert.AreEqual(FormatEffect.Off, _range.CharacterFormat.Italic);
+            Assert.AreEqual(FormatEffect.Off, _range.CharacterFormat.Bold);
+
+            _highlighter.Highlight();
+
+            Assert.AreEqual(FormatEffect.Off, _range.CharacterFormat.Italic);
+            Assert.AreEqual(FormatEffect.On, _range.CharacterFormat.Bold);
+        }
+
+        /// <summary>
+        /// Tests 
+        /// 
+        /// ###### title
+        /// </summary>
+        [TestMethod]
+        public void TestTitlePounds()
+        {
+            _range.Text = "# Title text\r";
+
+            Assert.AreEqual(FormatEffect.Off, _range.CharacterFormat.Italic);
+            Assert.AreEqual(FormatEffect.Off, _range.CharacterFormat.Bold);
+
+            _highlighter.Highlight();
+
+            Assert.AreEqual(FormatEffect.Off, _range.CharacterFormat.Italic);
             Assert.AreEqual(FormatEffect.On, _range.CharacterFormat.Bold);
         }
     }
