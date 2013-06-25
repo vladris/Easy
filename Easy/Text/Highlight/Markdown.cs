@@ -18,15 +18,15 @@ namespace Easy.Text.Highlight
         /// </summary>
         /// <param name="document"></param>
         public Markdown(ITextDocument document)
-            : base(document, ResetHighlight)
+            : base(document)
         {
         }
 
         /// <summary>
-        /// Reset highlight action
+        /// Performs default formatting (non-highlighted text)
         /// </summary>
-        /// <param name="format">Default formatting</param>
-        private static void ResetHighlight(ITextCharacterFormat format)
+        /// <param name="format">Format of selection</param>
+        protected override void DefaultFormatting(ITextCharacterFormat format)
         {
             format.Bold = FormatEffect.Off;
             format.Italic = FormatEffect.Off;
@@ -51,20 +51,19 @@ namespace Easy.Text.Highlight
                     format.Bold = FormatEffect.On; 
                 });
 
+            // Italic text
+            AddHighlightRule(@"(\*|_)(?=\S)(.+?)(?<=\S)\1", 
+                (format) => 
+                { 
+                    format.Italic = FormatEffect.On;
+                });
+
             // Bold text
             AddHighlightRule(@"(\*\*|__)(?=\S)(.+?[*_]*)(?<=\S)\1", 
                 (format) => 
                 { 
                     format.Bold = FormatEffect.On;
                     format.Italic = FormatEffect.Off;
-                });
-
-            // Italic text
-            AddHighlightRule(@"(\*|_)(?=\S)(.+?)(?<=\S)\1", 
-                (format) => 
-                { 
-                    format.Bold = FormatEffect.Off;
-                    format.Italic = FormatEffect.On;
                 });
 
             // Bold-italic text

@@ -24,11 +24,6 @@ namespace Easy.Text.Highlight
         /// </summary>
         protected ITextDocument document;
 
-        /// <summary>
-        /// Default formatting action
-        /// </summary>
-        private Action<ITextCharacterFormat> _defaultFormatting;
-
         // List of regexes to run on the document and corresponding formatting actions
         private List<Tuple<Regex, Action<ITextCharacterFormat>>> _highlights;
 
@@ -36,8 +31,7 @@ namespace Easy.Text.Highlight
         /// Creates a new instance of BaseHighlighter
         /// </summary>
         /// <param name="document">Document to highlight</param>
-        /// <param name="defaultFormatting">Default formatting</param>
-        public BaseHighlighter(ITextDocument document, Action<ITextCharacterFormat> defaultFormatting)
+        public BaseHighlighter(ITextDocument document)
         {
             this.document = document;
 
@@ -45,12 +39,17 @@ namespace Easy.Text.Highlight
             // the document
             this.workerRange = document.GetRange(0, 0);
 
-            this._defaultFormatting = defaultFormatting;
             this._highlights = new List<Tuple<Regex, Action<ITextCharacterFormat>>>();
 
             // Add highlighting rules
             AddHighlightRules();
         }
+
+        /// <summary>
+        /// Performs default formatting (non-highlighted text)
+        /// </summary>
+        /// <param name="format">Format of selection</param>
+        protected abstract void DefaultFormatting(ITextCharacterFormat format);
 
         /// <summary>
         /// Adds a highlighting rule
@@ -98,7 +97,7 @@ namespace Easy.Text.Highlight
             workerRange.GetText(TextGetOptions.None, out text);
 
             // Reset highlighting for the whole document
-            _defaultFormatting.Invoke(workerRange.CharacterFormat);
+            DefaultFormatting(workerRange.CharacterFormat);
 
             // Remember start position of the worker range
             int start = workerRange.StartPosition;
@@ -110,7 +109,7 @@ namespace Easy.Text.Highlight
                 foreach (Match match in highlight.Item1.Matches(text))
                 {
                     // Select the match and format it
-                    workerRange.StartPosition = workerRange.StartPosition + match.Index;
+                    workerRange.StartPosition = start + match.Index;
                     workerRange.EndPosition = workerRange.StartPosition + match.Length;
                     highlight.Item2.Invoke(workerRange.CharacterFormat);
                 }
@@ -118,7 +117,7 @@ namespace Easy.Text.Highlight
 
             // Reset formatting at cursor
             workerRange.SetRange(document.Selection.EndPosition, document.Selection.EndPosition);
-            _defaultFormatting.Invoke(workerRange.CharacterFormat);
+            DefaultFormatting(workerRange.CharacterFormat);
         }
     }
 }
