@@ -65,7 +65,7 @@ highlighter.Highlight();
 
 ### Easy.Text.Search
 
-Enables string search on an ITextDocument, selecting the found string.
+Enables string search on an `ITextDocument`, selecting the found string.
 
 ```csharp
 var search = new Search(SomeTextDocument);
@@ -84,7 +84,7 @@ search.FindNext("bar");
 
 ### Easy.Text.WordCount
 
-Provides asynchronous word count on an ITextDocument.
+Provides asynchronous word count on an `ITextDocument`.
 
 ```csharp
 var wordCount = new WordCount(SomeTextDocument);
