@@ -19,20 +19,25 @@ namespace Easy.Text.Highlight
         /// </summary>
         protected ITextRange workerRange;
 
-
         /// <summary>
         /// ITextDocument to highlight
         /// </summary>
         protected ITextDocument document;
 
-        // List of regexes to run on the document and corresponding character formats
-        private List<Tuple<Regex, ITextCharacterFormat>> _highlights;
+        /// <summary>
+        /// Default formatting action
+        /// </summary>
+        private Action<ITextCharacterFormat> _defaultFormatting;
+
+        // List of regexes to run on the document and corresponding formatting actions
+        private List<Tuple<Regex, Action<ITextCharacterFormat>>> _highlights;
 
         /// <summary>
         /// Creates a new instance of BaseHighlighter
         /// </summary>
         /// <param name="document">Document to highlight</param>
-        public BaseHighlighter(ITextDocument document)
+        /// <param name="defaultFormatting">Default formatting</param>
+        public BaseHighlighter(ITextDocument document, Action<ITextCharacterFormat> defaultFormatting)
         {
             this.document = document;
 
@@ -40,30 +45,31 @@ namespace Easy.Text.Highlight
             // the document
             this.workerRange = document.GetRange(0, 0);
 
-            this._highlights = new List<Tuple<Regex, ITextCharacterFormat>>();
+            this._defaultFormatting = defaultFormatting;
+            this._highlights = new List<Tuple<Regex, Action<ITextCharacterFormat>>>();
 
             // Add highlighting rules
-            AddHighlightRules();          
+            AddHighlightRules();
         }
 
         /// <summary>
         /// Adds a highlighting rule
         /// </summary>
         /// <param name="regex">Regular expression</param>
-        /// <param name="format">Associated format</param>
-        protected void AddHighlightRule(Regex regex, ITextCharacterFormat format)
+        /// <param name="formattingAction">Associated formatting action</param>
+        protected void AddHighlightRule(Regex regex, Action<ITextCharacterFormat> formattingAction)
         {
-            _highlights.Add(new Tuple<Regex, ITextCharacterFormat>(regex, format));
+            _highlights.Add(new Tuple<Regex, Action<ITextCharacterFormat>>(regex, formattingAction));
         }
 
         /// <summary>
         /// Adds a highlighting rule
         /// </summary>
         /// <param name="pattern">Regular expression pattern</param>
-        /// <param name="format">Associated format</param>
-        protected void AddHighlightRule(string pattern, ITextCharacterFormat format)
+        /// <param name="formattingAction">Associated formatting action</param>
+        protected void AddHighlightRule(string pattern, Action<ITextCharacterFormat> formattingAction)
         {
-            _highlights.Add(new Tuple<Regex, ITextCharacterFormat>(new Regex(pattern), format));
+            _highlights.Add(new Tuple<Regex, Action<ITextCharacterFormat>>(new Regex(pattern), formattingAction));
         }
 
         /// <summary>
@@ -91,6 +97,9 @@ namespace Easy.Text.Highlight
             SelectRange();
             workerRange.GetText(TextGetOptions.None, out text);
 
+            // Reset highlighting for the whole document
+            _defaultFormatting.Invoke(workerRange.CharacterFormat);
+
             // Remember start position of the worker range
             int start = workerRange.StartPosition;
 
@@ -103,9 +112,13 @@ namespace Easy.Text.Highlight
                     // Select the match and format it
                     workerRange.StartPosition = workerRange.StartPosition + match.Index;
                     workerRange.EndPosition = workerRange.StartPosition + match.Length;
-                    workerRange.CharacterFormat = highlight.Item2;
+                    highlight.Item2.Invoke(workerRange.CharacterFormat);
                 }
             }
+
+            // Reset formatting at cursor
+            workerRange.SetRange(document.Selection.EndPosition, document.Selection.EndPosition);
+            _defaultFormatting.Invoke(workerRange.CharacterFormat);
         }
     }
 }
