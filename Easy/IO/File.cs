@@ -50,5 +50,23 @@ namespace Easy.IO
             await FileIO.WriteBytesAsync(temp, buffer);
             await temp.MoveAndReplaceAsync(file);
         }
+
+        /// <summary>
+        /// Perofrms a transactional file save
+        /// </summary>
+        /// <param name="provider">Save provider</param>
+        public static async Task SaveAsync(ISaveProvider<byte[]> provider)
+        {
+            await File.SaveAsync(provider.DestinationFile, provider.Data);
+        }
+
+        /// <summary>
+        /// Performs a transactional file save
+        /// </summary>
+        /// <param name="provider">Save provider</param>
+        public static async Task SaveAsync(ISaveProvider<string> provider)
+        {
+            await File.SaveAsync(provider.DestinationFile, provider.Data);
+        }
     }
 } 
