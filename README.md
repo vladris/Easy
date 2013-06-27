@@ -38,9 +38,34 @@ foo.Value = 42;  // setting associated with foo is now 42
 string x = bar.Value; // x is now "baz"
 ```
 
+### Easy.Text.Highlight.BaseHighlighter
+
+Abstract class from which highlighters should derive. Deriving classes
+need to implement the `DefaultFormatting` method which should reset
+formatting to (non-highlighted) default and the `AddHighlightRules` which
+should contain a list of calls to `AddHighligtRule`, mapping regular 
+expressions to formatting actions.
+
+Look at `Easy.Text.Highlight.Markdown` for a sample implementation.
+
+Note highlighting can only run on the UI thread because the 
+`ITextDocument` and other involved WinRT objects cannot be used on other 
+threads.
+
+### Easy.Text.Highlight.Markdown
+
+Provides Markdown highlighting for a given `ITextDocument`.
+
+```csharp
+var highlighter = new Markdown(SomeTextDocument);
+
+// Applies Markdown formatting on the given text
+highlighter.Highlight();
+```
+
 ### Easy.Text.Search
 
-Enables string search on an ITextDocument, selecting the found string.
+Enables string search on an `ITextDocument`, selecting the found string.
 
 ```csharp
 var search = new Search(SomeTextDocument);
@@ -59,7 +84,7 @@ search.FindNext("bar");
 
 ### Easy.Text.WordCount
 
-Provides asynchronous word count on an ITextDocument.
+Provides asynchronous word count on an `ITextDocument`.
 
 ```csharp
 var wordCount = new WordCount(SomeTextDocument);
