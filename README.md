@@ -11,6 +11,34 @@ Currently in early alpha, use at your own risk.
 Classes
 -------
 
+### Easy.IO.AutoSave<T>
+
+Abstract base class for auto-save functionality, wraps a timer that
+periodically performs a save based on the given `ISaveProvider` (below).
+
+### Easy.IO.AutoSaveString
+
+Specialization of `AutoSave<T>` for an `ISaveProvider<string>`, enables
+auto-save functionality.
+
+```csharp
+// Initialize an auto-save every 10 seconds
+var autoSave = new AutoSaveString(provider, TimeSpan.FromSeconds(10));
+
+// Starts atuo-saving every 10 seconds
+autoSave.Start();
+
+...
+
+// Stops auto-saving
+autoSave.Stop();
+```
+
+### Easy.IO.AutoSaveBytes
+
+Specialization of `AutoSave<T>` for an `ISaveProvider<bytes[]>`, similar
+to the `AutoSaveString` above.
+
 ### Easy.IO.File
 
 Can create unique temporary files and perform transactional file saves.
@@ -22,6 +50,14 @@ IStorageFile temp = await File.CreateTemporaryFileAsync();
 // Transactional file save
 await File.SaveAsync(temp, "some content");
 ```
+
+### Easy.IO.ISaveProvider<T>
+
+A generic interface which provides an `IStorageFile` object as the
+`DestinationFile` property and data to be saved of type `T` as the `Data`
+property. Classes implementing this interface would encapsulate all data
+required to perform a file save (the file to save to and the data to be
+saved).  
 
 ### Easy.Platform.Setting
 
