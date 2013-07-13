@@ -102,6 +102,7 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IO\AutoSave.cs" />
     <Compile Include="IO\File.cs" />
     <Compile Include="IO\ISaveProvider.cs" />
     <Compile Include="Platform\Setting.cs" />

@@ -9,6 +9,7 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 
 using Easy.IO;
+using Easy.Test.IO.Mocks;
 
 namespace Easy.Test.IO
 {
@@ -109,19 +110,6 @@ namespace Easy.Test.IO
             }
         }
 
-        // Test ISaveProvider implementation
-        class TestSaveProvider<T> : ISaveProvider<T>
-        {
-            public IStorageFile DestinationFile { get; private set; }
-            public T Data { get; private set; }
-
-            public TestSaveProvider(IStorageFile destinationFile, T data)
-            {
-                DestinationFile = destinationFile;
-                Data = data;
-            }
-        }
-
         // Async save with string provider test
         private async Task TestSaveStringProviderAsync()
         {
@@ -129,7 +117,7 @@ namespace Easy.Test.IO
 
             string content = "Content";
 
-            var provider = new TestSaveProvider<string>(tempFile, content);
+            var provider = new SaveProviderMock<string>(tempFile, content);
 
             await File.SaveAsync(provider);
 
@@ -145,7 +133,7 @@ namespace Easy.Test.IO
 
             byte[] buffer = new byte[] { 5, 4, 3, 2, 1 };
 
-            var provider = new TestSaveProvider<byte[]>(tempFile, buffer);
+            var provider = new SaveProviderMock<byte[]>(tempFile, buffer);
 
             await File.SaveAsync(provider);
 
