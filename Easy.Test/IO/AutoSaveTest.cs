@@ -36,7 +36,7 @@ namespace Easy.Test.IO
             var mockProvider = new SaveProviderMock<byte[]>(temp, new byte[5]);
             
             // Setup an auto-save every 10 ms
-            AutoSaveBytes autoSave = new AutoSaveBytes(mockProvider, TimeSpan.FromMilliseconds(10));
+            AutoSaveBytes autoSave = new AutoSaveBytes(mockProvider, TimeSpan.FromMilliseconds(500));
             autoSave.Start();
 
             // Update provider data a few times
@@ -44,6 +44,9 @@ namespace Easy.Test.IO
             {
                 mockProvider.Data[4] = i;
             }
+
+            // Make sure auto-save has time to trigger and finish
+            Sleep(1000);
 
             // Stop auto-save
             autoSave.Stop();
@@ -78,7 +81,7 @@ namespace Easy.Test.IO
             var mockProvider = new SaveProviderMock<string>(temp, "");
             
             // Setup an auto-save every 10 ms
-            AutoSaveString autoSave = new AutoSaveString(mockProvider, TimeSpan.FromMilliseconds(10));
+            AutoSaveString autoSave = new AutoSaveString(mockProvider, TimeSpan.FromMilliseconds(500));
             autoSave.Start();
 
             // Update provider data a few times
@@ -86,6 +89,9 @@ namespace Easy.Test.IO
             {
                 mockProvider.Data = i.ToString();
             }
+
+            // Make sure auto-save has time to trigger and finish
+            Sleep(1000);
 
             // Stop auto-save
             autoSave.Stop();
@@ -95,6 +101,13 @@ namespace Easy.Test.IO
 
             // Should be in sync with the udated provider
             Assert.AreEqual("49", text);
+        }
+
+        // Simple sleep implementation
+        private void Sleep(int milliseconds)
+        {
+            DateTime start = DateTime.Now;
+            while ((DateTime.Now - start).TotalMilliseconds < milliseconds) ;
         }
     }
 }
