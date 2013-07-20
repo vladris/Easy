@@ -27,6 +27,9 @@ namespace Easy.IO
         // Internal timer used for the task
         private ThreadPoolTimer _timer = null;
 
+        // Semaphore making sure that save is done once Stop returns
+        private Semaphore _sem;
+
         /// <summary>
         /// Creates a new instance of AutoSave
         /// </summary>
@@ -48,7 +51,8 @@ namespace Easy.IO
                 _timer.Cancel();
             }
 
-            _timer = ThreadPoolTimer.CreatePeriodicTimer(DoSave, Period);
+            _sem = new Semaphore(1, 1);
+            _timer = ThreadPoolTimer.CreatePeriodicTimer(SemSave, Period);
         }
 
         /// <summary>
@@ -58,6 +62,15 @@ namespace Easy.IO
         {
             _timer.Cancel();
             _timer = null;
+            _sem.WaitOne();
+        }
+
+        // Perform save using the semaphore
+        private void SemSave(ThreadPoolTimer timer)
+        {
+            _sem.WaitOne();
+            DoSave(timer);
+            _sem.Release();
         }
 
         /// <summary>
