@@ -61,8 +61,8 @@ namespace Easy.IO
         public void Stop()
         {
             _timer.Cancel();
-            _timer = null;
             _sem.WaitOne();
+            _timer = null;
         }
 
         // Perform save using the semaphore
