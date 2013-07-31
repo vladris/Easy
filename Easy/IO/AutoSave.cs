@@ -81,41 +81,6 @@ namespace Easy.IO
         /// </summary>
         /// <param name="timer">Timer object</param>
         protected abstract void DoSave(ThreadPoolTimer timer);
-
-        // Auto-save null object
-        class AutoSaveNull : AutoSave<T>
-        {
-            // Null Save Provider
-            class NullSaveProvider : ISaveProvider<T>
-            {
-                public T Data { get { return default(T); } }
-                public Windows.Storage.IStorageFile DestinationFile { get { return null; } }
-            }
-
-            public AutoSaveNull()
-                : base(new NullSaveProvider(), TimeSpan.MaxValue)
-            {
-            }
-
-            protected override void DoSave(ThreadPoolTimer timer)
-            {
-                // Do nothing
-            }
-        }
-
-        // AutoSave null-object
-        private static AutoSaveNull _nullObject = new AutoSaveNull();
-
-        /// <summary>
-        /// Auto-save null object
-        /// </summary>
-        public static AutoSave<T> NullObject
-        {
-            get
-            {
-                return _nullObject;
-            }
-        }
     }
 
     /// <summary>
