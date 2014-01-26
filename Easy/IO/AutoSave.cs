@@ -46,10 +46,7 @@ namespace Easy.IO
         /// </summary>
         public void Start()
         {
-            if (_timer != null)
-            {
-                _timer.Cancel();
-            }
+            Stop();
 
             _sem = new Semaphore(1, 1);
             _timer = ThreadPoolTimer.CreatePeriodicTimer(SemSave, Period);
