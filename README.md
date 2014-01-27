@@ -1,12 +1,16 @@
-Easy<sup>α</sup> 
+Easy
 ====
 
 A library that makes developing for WinRT easy (well, easier).
 
-The code is being refactored out of the Windows 8 app I wrote, called
-[WriteRT](http://vladris.com/writert).
+The code is being currently used in [WriteRT](http://vladris.com/writert),
+a creative writing Windows Store app.
 
-Currently in early alpha, use at your own risk.
+Get it from [NuGet](https://www.nuget.org/packages/Easy/):
+
+```
+PM> Install-Package Easy
+```
 
 Classes
 -------
@@ -142,6 +146,6 @@ Toast.Show("Title", "Some content");
 License
 -------
 
-Copyright (c) 2013 Vlad Riscutia
+Copyright (c) 2013-2014 Vlad Riscutia
 
 [Microsoft Public License](http://opensource.org/licenses/ms-pl)
