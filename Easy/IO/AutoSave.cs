@@ -27,8 +27,8 @@ namespace Easy.IO
         // Internal timer used for the task
         private ThreadPoolTimer _timer = null;
 
-        // Semaphore making sure that save is done once Stop returns
-        private Semaphore _sem;
+        // Lock to make sure saves don't overlap
+        private object _lockObject = new object();
 
         /// <summary>
         /// Creates a new instance of AutoSave
@@ -48,7 +48,6 @@ namespace Easy.IO
         {
             Stop();
 
-            _sem = new Semaphore(1, 1);
             _timer = ThreadPoolTimer.CreatePeriodicTimer(SemSave, Period);
         }
 
@@ -60,24 +59,27 @@ namespace Easy.IO
             if (_timer != null)
             {
                 _timer.Cancel();
-                _sem.WaitOne();
                 _timer = null;
             }
         }
 
-        // Perform save using the semaphore
+        /// <summary>
+        /// Perform save
+        /// </summary>
+        /// <param name="timer">Unused</param>
         private void SemSave(ThreadPoolTimer timer)
         {
-            _sem.WaitOne();
-            DoSave(timer);
-            _sem.Release();
+            // Critical section
+            lock (_lockObject)
+            {
+                DoSave();
+            }
         }
 
         /// <summary>
         /// Deriving classes should provide save implementation
         /// </summary>
-        /// <param name="timer">Timer object</param>
-        protected abstract void DoSave(ThreadPoolTimer timer);
+        protected abstract void DoSave();
     }
 
     /// <summary>
@@ -98,8 +100,7 @@ namespace Easy.IO
         /// <summary>
         /// Save implementation
         /// </summary>
-        /// <param name="timer">Timer object</param>
-        protected override void DoSave(ThreadPoolTimer timer)
+        protected override void DoSave()
         {
             File.SaveAsync(SaveProvider).Wait();
         }
@@ -123,8 +124,7 @@ namespace Easy.IO
         /// <summary>
         /// Save implementation
         /// </summary>
-        /// <param name="timer">Timer object</param>
-        protected override void DoSave(ThreadPoolTimer timer)
+        protected override void DoSave()
         {
             File.SaveAsync(SaveProvider).Wait();
         }

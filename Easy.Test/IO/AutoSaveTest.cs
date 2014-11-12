@@ -104,31 +104,6 @@ namespace Easy.Test.IO
             Assert.AreEqual("49", text);
         }
 
-        /// <summary>
-        /// Enure that Stop() doesn't return while save is ongoing
-        /// </summary>
-        [TestMethod]
-        public void TestAutoSaveStop()
-        {
-            var autoSave = new AutoSaveStop();
-
-            autoSave.Start();
-
-            // Wait for auto-save to trigger
-            autoSave.Semaphore1.WaitOne();
-
-            // Auto-saving...
-            autoSave.Semaphore2.Release();
-
-            var before = DateTime.Now;
-
-            // DoSave is sleeping 500 ms now, Stop should return only after DoSave completes
-            autoSave.Stop();
-
-            // Should've taken at least 300 ms for DoSave to finish (actually 500 but give some room)
-            Assert.IsTrue((DateTime.Now - before).TotalMilliseconds > 300);
-        }
-
         // Used by TestAutoSaveStop
         class AutoSaveStop : AutoSave<string>
         {
@@ -142,7 +117,7 @@ namespace Easy.Test.IO
                 Semaphore2 = new Semaphore(0, 1);
             }
 
-            protected override void DoSave(Windows.System.Threading.ThreadPoolTimer timer)
+            protected override void DoSave()
             {
                 Semaphore1.Release();
                 Semaphore2.WaitOne();
